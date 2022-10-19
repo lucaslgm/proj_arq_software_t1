@@ -12,5 +12,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class AeroportoDTO {
+    private Long id;
+    private String nome;
+    private String iata;
     private RefGeoDTO localizacao;
 }

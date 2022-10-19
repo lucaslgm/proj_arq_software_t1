@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
-@Component
+/*@Component
 public class RotaRepository implements IRotaRepository {
 
     @Override
@@ -69,3 +69,4 @@ public class RotaRepository implements IRotaRepository {
 
     }
 }
+*/
