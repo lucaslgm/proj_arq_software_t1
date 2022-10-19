@@ -12,7 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "refgeo")
+@Table(name = "referenciasgeograficas")
 public class RefGeoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

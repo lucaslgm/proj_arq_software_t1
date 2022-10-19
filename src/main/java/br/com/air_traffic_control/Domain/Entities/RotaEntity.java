@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -14,19 +14,22 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "rota")
+@Table(name = "rotas")
 public class RotaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "rota_id", nullable = false)
     private Long id;
-    @ManyToOne
-    @JoinColumn(name = "aeroporto_origem", referencedColumnName="aeroporto_id")
+
+    @OneToOne
     private AeroportoEntity origem;
-    @ManyToOne
-    @JoinColumn(name = "aeroporto_destino", referencedColumnName="aeroporto_id")
+
+    @OneToOne
     private AeroportoEntity destino;
-    @OneToMany
+
+    @OneToMany( targetEntity=AeroviaEntity.class )
     private List<AeroviaEntity> conjuntoAeroviaEntities;
-    private Date data;
+
+    @Column(name = "data")
+    private LocalDate data;
 }

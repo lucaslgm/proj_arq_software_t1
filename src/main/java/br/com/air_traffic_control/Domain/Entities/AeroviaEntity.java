@@ -1,5 +1,6 @@
 package br.com.air_traffic_control.Domain.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,26 +16,24 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "aerovia")
+@Table(name = "aerovias")
 public class AeroviaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "aerovia_id", nullable = false)
     private Long id;
 
-    @OneToMany
-    @JoinColumn(name = "faixa_id")
-    private final List<FaixaAeroviaEntity> faixas = new ArrayList<>(10);
+    @OneToMany( targetEntity=FaixaAeroviaEntity.class )
+    private List<FaixaAeroviaEntity> faixas;
 
     @ManyToOne
-    @JoinColumn(name = "refgeo_id_origem", referencedColumnName="refgeo_id")
+    @JoinColumn(name = "origem", referencedColumnName="refgeo_id")
     private RefGeoEntity origem;
 
     @ManyToOne
-    @JoinColumn(name = "refgeo_id_destino", referencedColumnName="refgeo_id")
+    @JoinColumn(name = "destino", referencedColumnName="refgeo_id")
     private RefGeoEntity destino;
 
     private String nome;
     private int distancia;
-    private LocalDate data;
 }

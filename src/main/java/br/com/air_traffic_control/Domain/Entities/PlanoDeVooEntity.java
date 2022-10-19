@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 
@@ -20,12 +21,15 @@ public class PlanoDeVooEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "planoDeVoo_id", nullable = false)
     private Long id;
+
     @OneToOne
     @JoinColumn(name = "rota_id")
     private RotaEntity rotaEntity;
+
     private int altitude;
     private int velocidade;
-    private Date data;
+
+    private LocalDate data;
     private int horario;
     private String status;
     private int numeroVoo;

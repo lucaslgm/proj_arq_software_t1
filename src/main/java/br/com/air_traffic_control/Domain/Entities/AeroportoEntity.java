@@ -12,16 +12,17 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "aeroporto")
+@Table(name = "aeroportos")
 public class AeroportoEntity {
-    private String nome;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "aeroporto_id", nullable = false)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "refgeo_id")
+    @JoinColumn(name = "localizacao", referencedColumnName = "refgeo_id")
     private RefGeoEntity localizacao;
+
+    private String nome;
+    private String iata;
 }
