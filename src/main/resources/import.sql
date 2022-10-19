@@ -19,5 +19,5 @@
     INSERT INTO aerovias(nome, distancia, origem, destino) VALUES ('POA-GRU', 508.25, 5, 1);
     INSERT INTO aerovias(nome, distancia, origem, destino) VALUES ('CGH-FLN', 487.1, 2, 4);
 
---     INSERT INTO rotas(data, origem, destino) VALUES ('2022-10-31', 5, 1);
---     INSERT INTO rotas(data, origem, destino) VALUES ('2022-10-21', 2, 4));
+    INSERT INTO rotas(data, origem, destino) VALUES ('2022-10-31', 'GRU', 'GIG');
+    INSERT INTO rotas(data, origem, destino) VALUES ('2022-10-21', 'POA', 'FLN');

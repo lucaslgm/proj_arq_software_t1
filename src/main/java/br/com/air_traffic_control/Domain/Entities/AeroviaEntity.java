@@ -1,14 +1,12 @@
 package br.com.air_traffic_control.Domain.Entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -16,6 +14,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Getter
+@Setter
 @Table(name = "aerovias")
 public class AeroviaEntity {
     @Id
@@ -23,8 +23,8 @@ public class AeroviaEntity {
     @Column(name = "aerovia_id", nullable = false)
     private Long id;
 
-    @OneToMany( targetEntity=FaixaAeroviaEntity.class )
-    private List<FaixaAeroviaEntity> faixas;
+    @ElementCollection(targetClass = SlotEntity.class, fetch = FetchType.EAGER)
+    private final List<SlotEntity> slots = new ArrayList<>(10);
 
     @ManyToOne
     @JoinColumn(name = "origem", referencedColumnName="refgeo_id")
@@ -35,5 +35,6 @@ public class AeroviaEntity {
     private RefGeoEntity destino;
 
     private String nome;
-    private int distancia;
+    private double distancia;
+    private Date data;
 }

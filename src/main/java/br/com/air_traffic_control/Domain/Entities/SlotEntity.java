@@ -6,18 +6,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-//@Entity
-@Table(name = "horario")
-public class HorarioEntity {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @Column(name = "horario_id", nullable = false)
-//    private Long id;
+@Embeddable
+public class SlotEntity {
+    private int altitude;
     private int hora;
     private boolean disponivel;
 }
