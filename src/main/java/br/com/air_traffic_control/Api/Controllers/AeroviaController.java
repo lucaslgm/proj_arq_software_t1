@@ -17,10 +17,10 @@ public class AeroviaController {
         this.service = service;
     }
 
-    @PostMapping("/save")
-    public AeroviaEntity save(@RequestBody RefGeoEntity origem, RefGeoEntity destino, double distancia){
-        return this.service.CadastrarNovaAerovia(origem,destino,distancia);
-    }
+//    @PostMapping("/save")
+//    public AeroviaEntity save(@RequestBody RefGeoEntity origem, RefGeoEntity destino, double distancia){
+//        return this.service.CadastrarNovaAerovia(origem,destino,distancia);
+//    }
 
     @GetMapping
     public List<AeroviaEntity> findAll() {

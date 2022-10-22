@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,12 +18,12 @@ import java.util.List;
 @Table(name = "aerovias")
 public class AeroviaEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "aerovia_id", nullable = false)
     private Long id;
 
     @ElementCollection(targetClass = SlotEntity.class, fetch = FetchType.EAGER)
-    private final List<SlotEntity> slots = new ArrayList<>(10);
+    private final List<SlotEntity> slots = new ArrayList<>(240);
 
     @ManyToOne
     @JoinColumn(name = "origem", referencedColumnName="refgeo_id")
@@ -36,5 +35,4 @@ public class AeroviaEntity {
 
     private String nome;
     private double distancia;
-    private Date data;
 }

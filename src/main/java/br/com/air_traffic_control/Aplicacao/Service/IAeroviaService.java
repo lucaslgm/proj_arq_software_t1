@@ -11,7 +11,9 @@ import java.util.List;
 public interface IAeroviaService {
     String RelatorioOcupacaoAeroviaporData(Date data, AeroviaDTO aerovia);
 
-    AeroviaEntity CadastrarNovaAerovia(RefGeoEntity origem, RefGeoEntity destino, double distancia);
+//    AeroviaEntity CadastrarNovaAerovia(RefGeoEntity origem, RefGeoEntity destino, double distancia);
+
+    AeroviaEntity CadastrarNovaAerovia(AeroviaDTO aerovia);
 
     List<AeroviaEntity> findAll();
     public List<RefGeoEntity> listarReferenciasGeograficas();
