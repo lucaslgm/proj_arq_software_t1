@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class RefGeoDTO {
+    private long id;
     private String nome;
     private double latitude;
     private double longitude;

@@ -1,12 +1,9 @@
 package br.com.air_traffic_control.Domain.Entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Builder
@@ -18,7 +15,7 @@ import java.util.List;
 @Table(name = "aerovias")
 public class AeroviaEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "aerovia_id", nullable = false)
     private Long id;
 

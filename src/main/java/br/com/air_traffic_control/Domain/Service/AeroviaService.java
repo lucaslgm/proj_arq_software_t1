@@ -1,9 +1,11 @@
 package br.com.air_traffic_control.Domain.Service;
 
 import br.com.air_traffic_control.Aplicacao.Dtos.AeroviaDTO;
+import br.com.air_traffic_control.Aplicacao.Dtos.RefGeoDTO;
 import br.com.air_traffic_control.Aplicacao.Service.IAeroviaService;
 import br.com.air_traffic_control.Domain.Entities.AeroviaEntity;
 import br.com.air_traffic_control.Domain.Entities.RefGeoEntity;
+import br.com.air_traffic_control.Domain.Entities.SlotEntity;
 import br.com.air_traffic_control.Domain.Repositories.IAeroviaRepository;
 import br.com.air_traffic_control.Domain.Repositories.IRefGeoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,27 +30,31 @@ public class AeroviaService implements IAeroviaService {
     }
 
     @Override
-    public AeroviaEntity CadastrarNovaAerovia(AeroviaDTO aerovia) {
+    public AeroviaEntity CadastrarNovaAerovia(RefGeoDTO c1, RefGeoDTO c2) {
+
+        var distancia = CalcularDistancia(c1,c2);
 
         RefGeoEntity origem = RefGeoEntity
                 .builder()
-                .nome(aerovia.getOrigem().getNome())
-                .latitude(aerovia.getOrigem().getLatitude())
-                .longitude(aerovia.getOrigem().getLongitude())
+                .id(c1.getId())
+                .nome(c1.getNome())
+                .latitude(c1.getLatitude())
+                .longitude(c1.getLongitude())
                 .build();
 
         RefGeoEntity destino = RefGeoEntity
                 .builder()
-                .nome(aerovia.getDestino().getNome())
-                .latitude(aerovia.getDestino().getLatitude())
-                .longitude(aerovia.getDestino().getLongitude())
+                .id(c2.getId())
+                .nome(c2.getNome())
+                .latitude(c2.getLatitude())
+                .longitude(c2.getLongitude())
                 .build();
 
         AeroviaEntity entity = AeroviaEntity
                 .builder()
                 .origem(origem)
                 .destino(destino)
-                .distancia(aerovia.getDistancia())
+                .distancia(distancia)
                 .nome(origem.getNome()+"-"+ destino.getNome())
                 .build();
 
@@ -56,16 +62,25 @@ public class AeroviaService implements IAeroviaService {
             for(int j = 0; j < 24; j++){
                 int altitude = i;
                 int hora = j;
-                entity.getSlots().forEach(s -> {
-                    s.setAltitude(altitude);
-                    s.setHora(hora);
-                    s.setDisponivel(true);
-                });
+                entity.getSlots().add(new SlotEntity(i,j,true));
             }
         }
 
         return repository.save(entity);
     }
+
+    @Override
+    public long CadastrarNovaRefGeo(RefGeoDTO c) {
+        var entity = RefGeoEntity
+                .builder()
+                .nome(c.getNome())
+                .latitude(c.getLatitude())
+                .longitude(c.getLongitude())
+                .build();
+
+       var ret = refGeoRepository.save(entity);
+       return ret.getId();
+    };
 
     @Override
     public List<AeroviaEntity> findAll() {
@@ -77,7 +92,7 @@ public class AeroviaService implements IAeroviaService {
         return  refs;
     }
 
-    private double CalcularDistancia(RefGeoEntity origem, RefGeoEntity destino){
+    private double CalcularDistancia(RefGeoDTO origem, RefGeoDTO destino){
         double R = 6371;
         double OLAR = origem.getLatitude() * (Math.PI/180);
         double OLOR = origem.getLongitude() * (Math.PI/180);
