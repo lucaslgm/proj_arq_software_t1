@@ -78,6 +78,7 @@ public class AeroviaService implements IAeroviaService {
     }
 
     private double CalcularDistancia(RefGeoEntity origem, RefGeoEntity destino){
+        double R = 6371;
         double OLAR = origem.getLatitude() * (Math.PI/180);
         double OLOR = origem.getLongitude() * (Math.PI/180);
 
@@ -87,8 +88,8 @@ public class AeroviaService implements IAeroviaService {
         double MLAT = (OLAR - DLAR) < 0 ? (OLAR - DLAR) * -1 : (OLAR - DLAR);
         double MLON = (OLOR - DLOR) < 0 ? (OLOR - DLOR) * -1 : (OLOR - DLOR);
 
-        var ret = (Math.pow(Math.sin(MLAT/2),2) + Math.cos(OLAR)) * (Math.cos(DLAR) * Math.pow(Math.sin(MLON/2),2));
-
-        return ret;
+        var a = (Math.pow(Math.sin(MLAT/2),2) + Math.cos(OLAR)) * (Math.cos(DLAR) * Math.pow(Math.sin(MLON/2),2));
+        var c = 2 * Math.pow(Math.tan(Math.sqrt(a/Math.sqrt(1-a))),-1);
+        return R * c;
     }
 }
