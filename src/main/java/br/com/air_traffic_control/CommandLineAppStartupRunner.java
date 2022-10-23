@@ -115,9 +115,9 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 
         var A3 = aeroviaService.ObterAerovia(3);
 
-        POA_GRU.setConjuntoAerovias(new ArrayList<>());
-        POA_GRU.getConjuntoAerovias().add(A3.get());
-        CreateRota(POA_GRU);
+        POA_FLN.setConjuntoAerovias(new ArrayList<>());
+        POA_FLN.getConjuntoAerovias().add(A3.get());
+        CreateRota(POA_FLN);
 
         var RGRU = refGeoService.ObterRefGeo(1);
         var RCGH = refGeoService.ObterRefGeo(2);

@@ -7,10 +7,10 @@ import br.com.air_traffic_control.Domain.Entities.AeroviaEntity;
 import br.com.air_traffic_control.Domain.Entities.RefGeoEntity;
 import br.com.air_traffic_control.Domain.Entities.SlotEntity;
 import br.com.air_traffic_control.Domain.Repositories.IAeroviaRepository;
-import br.com.air_traffic_control.Domain.Repositories.IRefGeoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -18,7 +18,6 @@ import java.util.Optional;
 @Service
 public class AeroviaService implements IAeroviaService {
     private final IAeroviaRepository repository;
-
 
     @Autowired
     public AeroviaService(IAeroviaRepository repository) {
@@ -80,19 +79,49 @@ public class AeroviaService implements IAeroviaService {
         return  aerovias;
     }
 
+    @Override
+    public List<SlotEntity> ListarSlotsLivres(long aerovia, int partida, double velocidade) {
+        var aux  = repository.findById(aerovia).get();
+        var slots = aux.getSlots();
+        List<SlotEntity> list = new ArrayList<>();
+        List<Integer> indexes = new ArrayList<>();
+
+        var qtd = Math.ceil(aux.getDistancia()/ velocidade);
+
+        if(qtd == 1){
+            slots.forEach(s -> {
+                if(s.getHora() == partida && s.isDisponivel()) {
+                    list.add(s);
+                }
+            });
+            return list;
+        }
+
+        slots.forEach(s -> {
+            if(s.getHora() == partida && s.isDisponivel()) {
+                indexes.add(slots.indexOf(s));
+            }
+        });
+
+        indexes.forEach(i -> {
+            for(int j = i; j < i+qtd; j++){
+                list.add(slots.get(j));
+            }
+        });
+
+        return list;
+    }
+
     private double CalcularDistancia(RefGeoDTO origem, RefGeoDTO destino){
         double R = 6371;
-        double OLAR = origem.getLatitude() * (Math.PI/180);
-        double OLOR = origem.getLongitude() * (Math.PI/180);
-
-        double DLAR = destino.getLatitude() * (Math.PI/180);
-        double DLOR = destino.getLongitude() * (Math.PI/180);
-
-        double MLAT = (OLAR - DLAR) < 0 ? (OLAR - DLAR) * -1 : (OLAR - DLAR);
-        double MLON = (OLOR - DLOR) < 0 ? (OLOR - DLOR) * -1 : (OLOR - DLOR);
-
-        var a = (Math.pow(Math.sin(MLAT/2),2) + Math.cos(OLAR)) * (Math.cos(DLAR) * Math.pow(Math.sin(MLON/2),2));
-        var c = 2 * Math.pow(Math.tan(Math.sqrt(a/Math.sqrt(1-a))),-1);
-        return R * c;
+        double dLat = Math.toRadians(destino.getLatitude() - origem.getLatitude());
+        double dLng = Math.toRadians(destino.getLongitude() - origem.getLongitude());
+        double sindLat = Math.sin(dLat / 2);
+        double sindLng = Math.sin(dLng / 2);
+        double a = Math.pow(sindLat, 2) + Math.pow(sindLng, 2)
+                * Math.cos(Math.toRadians(origem.getLatitude()))
+                * Math.cos(Math.toRadians(destino.getLatitude()));
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return Math.ceil(R * c);
     }
 }
