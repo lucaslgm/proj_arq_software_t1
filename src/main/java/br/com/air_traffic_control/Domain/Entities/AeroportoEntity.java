@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Table(name = "aeroportos")
 public class AeroportoEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "aeroporto_id", nullable = false)
     private Long id;
 

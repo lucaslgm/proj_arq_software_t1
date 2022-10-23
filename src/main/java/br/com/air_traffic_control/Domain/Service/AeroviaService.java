@@ -13,16 +13,16 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AeroviaService implements IAeroviaService {
     private final IAeroviaRepository repository;
-    private final IRefGeoRepository refGeoRepository;
+
 
     @Autowired
-    public AeroviaService(IAeroviaRepository repository, IRefGeoRepository refGeoRepository) {
+    public AeroviaService(IAeroviaRepository repository) {
         this.repository = repository;
-        this.refGeoRepository = refGeoRepository;
     }
 
     public String RelatorioOcupacaoAeroviaporData(Date data, AeroviaDTO aerovia) {
@@ -70,26 +70,14 @@ public class AeroviaService implements IAeroviaService {
     }
 
     @Override
-    public long CadastrarNovaRefGeo(RefGeoDTO c) {
-        var entity = RefGeoEntity
-                .builder()
-                .nome(c.getNome())
-                .latitude(c.getLatitude())
-                .longitude(c.getLongitude())
-                .build();
-
-       var ret = refGeoRepository.save(entity);
-       return ret.getId();
-    };
+    public Optional<AeroviaEntity> ObterAerovia(long id) {
+        return repository.findById(id);
+    }
 
     @Override
     public List<AeroviaEntity> findAll() {
         List<AeroviaEntity> aerovias = repository.findAll();
         return  aerovias;
-    }
-    public List<RefGeoEntity> listarReferenciasGeograficas(){
-        List<RefGeoEntity> refs = refGeoRepository.findAll();
-        return  refs;
     }
 
     private double CalcularDistancia(RefGeoDTO origem, RefGeoDTO destino){

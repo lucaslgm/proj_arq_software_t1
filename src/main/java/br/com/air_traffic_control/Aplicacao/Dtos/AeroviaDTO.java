@@ -16,9 +16,10 @@ import java.util.List;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class AeroviaDTO {
+    private long id;
     private String nome;
     private RefGeoDTO origem;
     private RefGeoDTO destino;
-    private int distancia;
+    private double distancia;
     private final List<SlotEntity> slots = new ArrayList<>(240);
 }

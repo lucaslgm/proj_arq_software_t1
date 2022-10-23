@@ -1,6 +1,7 @@
 package br.com.air_traffic_control.Api.Controllers;
 
 import br.com.air_traffic_control.Aplicacao.Service.IAeroviaService;
+import br.com.air_traffic_control.Aplicacao.Service.IRefGeoService;
 import br.com.air_traffic_control.Domain.Entities.AeroviaEntity;
 import br.com.air_traffic_control.Domain.Entities.RefGeoEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +12,12 @@ import java.util.List;
 @RequestMapping("/aerovia")
 public class AeroviaController {
     private final IAeroviaService service;
+    private final IRefGeoService refGeoService;
 
     @Autowired
-    public AeroviaController(IAeroviaService service) {
+    public AeroviaController(IAeroviaService service, IRefGeoService refGeoService) {
         this.service = service;
+        this.refGeoService = refGeoService;
     }
 
 //    @PostMapping("/save")
@@ -29,7 +32,7 @@ public class AeroviaController {
 
     @GetMapping("/refs")
     public List<RefGeoEntity> listarReferenciasGeograficas(){
-        List<RefGeoEntity> refs = service.listarReferenciasGeograficas();
+        List<RefGeoEntity> refs = refGeoService.listarReferenciasGeograficas();
         return  refs;
     }
 }
