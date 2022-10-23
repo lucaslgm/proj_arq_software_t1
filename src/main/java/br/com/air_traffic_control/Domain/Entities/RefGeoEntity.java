@@ -15,7 +15,7 @@ import javax.persistence.*;
 @Table(name = "referenciasgeograficas")
 public class RefGeoEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "refgeo_id", nullable = false)
     private Long id;
     private String nome;
