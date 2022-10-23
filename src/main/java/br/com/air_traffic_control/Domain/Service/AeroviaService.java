@@ -87,6 +87,7 @@ public class AeroviaService implements IAeroviaService {
         List<AeroviaEntity> aerovias = repository.findAll();
         return  aerovias;
     }
+    
     public List<RefGeoEntity> listarReferenciasGeograficas(){
         List<RefGeoEntity> refs = refGeoRepository.findAll();
         return  refs;
