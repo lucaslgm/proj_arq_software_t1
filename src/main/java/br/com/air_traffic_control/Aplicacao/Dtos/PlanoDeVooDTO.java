@@ -1,6 +1,8 @@
 package br.com.air_traffic_control.Aplicacao.Dtos;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+
+import br.com.air_traffic_control.Domain.Entities.RotaEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +17,7 @@ import java.util.Date;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class PlanoDeVooDTO {
     private int id;
-    private RotaDTO rota;
+    private RotaEntity rota;
     private int altitude;
     private int velocidade;
     private Date data;

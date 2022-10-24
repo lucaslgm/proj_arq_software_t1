@@ -10,4 +10,5 @@ public interface IRotaService {
 
     List<RotaEntity> ConsultarRotasEntreDoisAeroportos(String origem, String destino);
     List<RotaEntity> ListarRotas();
+    RotaEntity findRotaById(long id);
 }

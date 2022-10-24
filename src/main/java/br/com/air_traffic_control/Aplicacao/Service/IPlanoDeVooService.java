@@ -11,7 +11,7 @@ public interface IPlanoDeVooService {
     List<RotaDTO> ListarRotasEntreAeroportos(AeroportoDTO origem, AeroportoDTO destino);
     List<FaixaAeroviaDTO> ListarNiveisDeVooLivres(int horaPartida, int velocidadeCruzeiro, AeroportoDTO origem, AeroportoDTO destino);
     String StatusPlanoDeVoo();
-    Boolean AprovarPlanoDeVoo(PlanoDeVooDTO planoDeVoo);
+    Boolean LiberarPlanoDeVoo(PlanoDeVooDTO planoDeVoo);
     Boolean CancelarPlanoDeVoo(PlanoDeVooDTO planoDeVoo);
-
+    String verificaPlanoDeVoo(PlanoDeVooDTO planoDeVoo);
 }

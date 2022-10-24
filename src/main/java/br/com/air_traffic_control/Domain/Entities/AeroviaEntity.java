@@ -32,4 +32,12 @@ public class AeroviaEntity {
 
     private String nome;
     private double distancia;
+
+    public SlotEntity getSlotByAltiudeAndHorario(int altitude, int horario){
+        for(SlotEntity slot : slots){
+            if(slot.getAltitude() == altitude && slot.getHora() == horario)
+                return slot;
+        }
+        return null;
+    }
 }
