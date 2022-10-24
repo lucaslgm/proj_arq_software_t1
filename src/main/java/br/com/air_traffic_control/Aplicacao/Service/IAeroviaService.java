@@ -4,6 +4,7 @@ import br.com.air_traffic_control.Aplicacao.Dtos.RefGeoDTO;
 import br.com.air_traffic_control.Domain.Entities.AeroviaEntity;
 import br.com.air_traffic_control.Domain.Entities.SlotEntity;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,4 +14,8 @@ public interface IAeroviaService {
     List<AeroviaEntity> findAll();
 
     List<SlotEntity> ListarSlotsLivres(long aerovia, int partida, double velocidade);
+
+    String RelatorioOcupacaoAeroviaporData(String data, long aerovia);
+
+    AeroviaEntity AtualizarAerovia(AeroviaEntity aerovia);
 }

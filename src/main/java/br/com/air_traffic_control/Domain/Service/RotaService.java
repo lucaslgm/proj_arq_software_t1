@@ -30,4 +30,6 @@ public class RotaService implements IRotaService {
     public List<RotaEntity> ListarRotas() {
         return repository.findAll();
     }
+
+
 }

@@ -1,6 +1,5 @@
 package br.com.air_traffic_control.Domain.Service;
 
-import br.com.air_traffic_control.Aplicacao.Dtos.AeroviaDTO;
 import br.com.air_traffic_control.Aplicacao.Dtos.RefGeoDTO;
 import br.com.air_traffic_control.Aplicacao.Service.IAeroviaService;
 import br.com.air_traffic_control.Domain.Entities.AeroviaEntity;
@@ -10,10 +9,8 @@ import br.com.air_traffic_control.Domain.Repositories.IAeroviaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class AeroviaService implements IAeroviaService {
@@ -24,7 +21,43 @@ public class AeroviaService implements IAeroviaService {
         this.repository = repository;
     }
 
-    public String RelatorioOcupacaoAeroviaporData(Date data, AeroviaDTO aerovia) {
+    public String RelatorioOcupacaoAeroviaporData(String data, long aerovia) {
+        var calendar = Calendar.getInstance();
+        String[] date = data.split("-");
+        var ano = Integer.parseInt(date[0]);
+        var mes = Integer.parseInt(date[1]) -1;
+        var dia = Integer.parseInt(date[2]);
+
+        switch (mes){
+            case 0: calendar.set(ano,Calendar.JANUARY, dia); break;
+            case 1: calendar.set(ano,Calendar.FEBRUARY, dia); break;
+            case 2: calendar.set(ano,Calendar.MARCH, dia); break;
+            case 3: calendar.set(ano,Calendar.APRIL, dia); break;
+            case 4: calendar.set(ano,Calendar.MAY, dia); break;
+            case 5: calendar.set(ano,Calendar.JUNE, dia); break;
+            case 6: calendar.set(ano,Calendar.JULY, dia); break;
+            case 7: calendar.set(ano,Calendar.AUGUST, dia); break;
+            case 8: calendar.set(ano,Calendar.SEPTEMBER, dia); break;
+            case 9: calendar.set(ano,Calendar.OCTOBER, dia); break;
+            case 10: calendar.set(ano,Calendar.NOVEMBER, dia); break;
+            case 11: calendar.set(ano,Calendar.DECEMBER, dia); break;
+        }
+
+        var aux = repository.findById(aerovia).get().getSlots();
+        double count = aux.stream().filter(s -> !s.isDisponivel()).count();
+        double size = aux.size();
+        var percentual = (count/size) * 100;
+
+
+        return String.format("O Percentual de ocupação da aerovia para a data %s foi de: %.2f", calendar.getTime(), percentual);
+    }
+
+    @Override
+    public AeroviaEntity AtualizarAerovia(AeroviaEntity aerovia) {
+        var aux = repository.findById(aerovia.getId());
+        if(aux.isPresent()){
+            return repository.save(aerovia);
+        }
         return null;
     }
 

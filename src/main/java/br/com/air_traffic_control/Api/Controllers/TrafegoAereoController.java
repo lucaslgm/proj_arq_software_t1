@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -49,9 +50,10 @@ public class TrafegoAereoController {
         return false;
     };
 
-    String RelatorioOcupacaoAeroviaporData(Date data, AeroviaDTO aerovia){
-        //TODO
-        return "";
+    @GetMapping("/rotas/relatorioOcupacao")
+    String RelatorioOcupacaoAeroviaporData(@RequestParam("data") String data,
+                                           @RequestParam("aerovia")long aerovia){
+        return aeroviaService.RelatorioOcupacaoAeroviaporData(data, aerovia);
     };
     
 }

@@ -5,6 +5,7 @@ import br.com.air_traffic_control.Aplicacao.Dtos.RefGeoDTO;
 import br.com.air_traffic_control.Aplicacao.Service.*;
 import br.com.air_traffic_control.Domain.Entities.AeronaveEntity;
 import br.com.air_traffic_control.Domain.Entities.AeroportoEntity;
+import br.com.air_traffic_control.Domain.Entities.AeroviaEntity;
 import br.com.air_traffic_control.Domain.Entities.RotaEntity;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
@@ -69,11 +70,14 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
         FLN.setId(CreateRefGeo(FLN));
         POA.setId(CreateRefGeo(POA));
 
-        CreateAerovia(GRU,CGH);
+        var GRU_CGH = CreateAerovia(GRU,CGH);
+        OcuparSlots(GRU_CGH);
+
         CreateAerovia(GRU,POA);
         CreateAerovia(POA,FLN);
         CreateAerovia(GIG,GRU);
-        CreateAerovia(POA,GIG);
+        var POA_GIG = CreateAerovia(POA,GIG);
+        OcuparSlots(POA_GIG);
 
         var A320 = AeronaveDTO
                 .builder()
@@ -163,8 +167,8 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
         CreateAeroporto(APOA);
     }
 
-    private void CreateAerovia(RefGeoDTO c1, RefGeoDTO c2){
-        aeroviaService.CadastrarNovaAerovia(c1,c2);
+    private AeroviaEntity CreateAerovia(RefGeoDTO c1, RefGeoDTO c2){
+        return aeroviaService.CadastrarNovaAerovia(c1,c2);
     }
 
     private long CreateRefGeo(RefGeoDTO c){
@@ -181,5 +185,13 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 
     private void CreateAeroporto(AeroportoEntity aeroporto){
         aeroportoService.CadastrarNovoAeroporto(aeroporto);
+    }
+
+    private void OcuparSlots(AeroviaEntity aerovia){
+        for (int i = 50; i< 150; i++){
+            aerovia.getSlots().get(i).setDisponivel(false);
+        }
+
+        aeroviaService.AtualizarAerovia(aerovia);
     }
 }
