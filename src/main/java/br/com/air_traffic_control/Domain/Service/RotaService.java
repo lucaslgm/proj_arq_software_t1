@@ -1,10 +1,15 @@
 package br.com.air_traffic_control.Domain.Service;
 
+import br.com.air_traffic_control.Aplicacao.Dtos.AeroviaDTO;
+import br.com.air_traffic_control.Aplicacao.Dtos.RotaDTO;
 import br.com.air_traffic_control.Aplicacao.Service.IRotaService;
+import br.com.air_traffic_control.Domain.Entities.AeroviaEntity;
 import br.com.air_traffic_control.Domain.Entities.RotaEntity;
 import br.com.air_traffic_control.Domain.Repositories.IRotaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -31,5 +36,7 @@ public class RotaService implements IRotaService {
         return repository.findAll();
     }
 
-
+    public RotaEntity findRotaById(long id){
+        return repository.findById(id).get();
+    }
 }
