@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -21,15 +22,13 @@ public class RotaEntity {
     @Column(name = "rota_id", nullable = false)
     private Long id;
 
-    @OneToOne
-    private AeroportoEntity origem;
+    private String origem;
 
-    @OneToOne
-    private AeroportoEntity destino;
+    private String destino;
 
     @OneToMany( targetEntity=AeroviaEntity.class )
-    private List<AeroviaEntity> conjuntoAeroviaEntities;
+    private List<AeroviaEntity> conjuntoAerovias;
 
     @Column(name = "data")
-    private LocalDate data;
+    private Date data;
 }

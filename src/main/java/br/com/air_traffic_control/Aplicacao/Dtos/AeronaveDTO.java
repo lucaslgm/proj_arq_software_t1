@@ -11,9 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class RefGeoDTO {
-    private long id;
-    private String nome;
-    private double latitude;
-    private double longitude;
+public class AeronaveDTO {
+    private String Prefixo;
+    private int VelocidadeCruzeiro;
+    private int autonomia;
 }

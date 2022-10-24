@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 @Data
 @Builder
@@ -14,7 +15,8 @@ import java.util.ArrayList;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class RotaDTO {
-    private RefGeoDTO origem;
-    private RefGeoDTO destino;
+    private String origem;
+    private String destino;
+    private Date data;
     private ArrayList<AeroviaDTO> conjuntoAerovias;
 }
