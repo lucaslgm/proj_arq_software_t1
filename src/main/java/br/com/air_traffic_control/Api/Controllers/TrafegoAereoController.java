@@ -4,10 +4,13 @@ import br.com.air_traffic_control.Aplicacao.Dtos.*;
 import br.com.air_traffic_control.Aplicacao.Service.IAeroviaService;
 import br.com.air_traffic_control.Aplicacao.Service.IPlanoDeVooService;
 import br.com.air_traffic_control.Aplicacao.Service.IRotaService;
+import br.com.air_traffic_control.Domain.Entities.PlanoDeVooEntity;
 import br.com.air_traffic_control.Domain.Entities.RotaEntity;
 import br.com.air_traffic_control.Domain.Entities.SlotEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -42,18 +45,36 @@ public class TrafegoAereoController {
 
         return aeroviaService.ListarSlotsLivres(aerovia,horaPartida,velocidadeCruzeiro);
     };
-    String StatusPlanoDeVoo(){
-        //TODO
-        return "";
-    };
-    Boolean AprovarPlanoDeVoo(PlanoDeVooDTO planoDeVoo){
-        //TODO
-        return false;
-    };
-    Boolean CancelarPlanoDeVoo(PlanoDeVooDTO planoDeVoo){
-        //TODO
-        return false;
-    };
+
+    @GetMapping("/planosDeVoo")
+    List<PlanoDeVooEntity> ListarPlanosDeVoo(){
+        return planoDeVooService.ListarPlanosDeVoo();
+    }
+
+
+    @PostMapping("/liberarPlanoDeVoo")
+    Boolean LiberarPlanoDeVoo(@RequestParam("data") String data, @RequestParam("horario") int horario,
+                            @RequestParam("numeroVoo") int nroVoo, @RequestParam("rotaId") long rotaId,
+                            @RequestParam("velocidade") int velocidade, @RequestParam("altitude") int altitude) throws ParseException{
+
+        PlanoDeVooDTO planoDeVoo = PlanoDeVooDTO
+                .builder()
+                .data(new SimpleDateFormat("yyyy-MM-dd").parse(data))
+                .horario(horario)
+                .numeroVoo(nroVoo)
+                .rota(rotaService.findRotaById(rotaId))
+                .velocidade(velocidade)
+                .altitude(altitude)
+                .status("Liberado")
+                .build();
+
+        return planoDeVooService.LiberarPlanoDeVoo(planoDeVoo);
+    }
+
+    @PutMapping("/cancelarPlanoDeVoo")
+    Boolean CancelarPlanoDeVoo(@RequestParam("planoDeVooID") long planoDeVoo){
+        return planoDeVooService.CancelarPlanoDeVoo(planoDeVoo);
+    }
 
     @GetMapping("/verificarPlanoDeVoo")
     String VerificaPlanoDeVoo(@RequestParam("data") String data, @RequestParam("horario") int horario,

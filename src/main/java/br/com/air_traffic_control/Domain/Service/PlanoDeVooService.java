@@ -7,12 +7,15 @@ import br.com.air_traffic_control.Aplicacao.Dtos.PlanoDeVooDTO;
 import br.com.air_traffic_control.Aplicacao.Dtos.RotaDTO;
 import br.com.air_traffic_control.Aplicacao.Service.IPlanoDeVooService;
 import br.com.air_traffic_control.Domain.Entities.AeroviaEntity;
+import br.com.air_traffic_control.Domain.Entities.PlanoDeVooEntity;
 import br.com.air_traffic_control.Domain.Entities.SlotEntity;
 import br.com.air_traffic_control.Domain.Repositories.IPlanoDeVooRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 
 @Service
@@ -32,16 +35,26 @@ public class PlanoDeVooService implements IPlanoDeVooService {
         return null;
     }
 
-    public String StatusPlanoDeVoo() {
-        return null;
+    public List<PlanoDeVooEntity> ListarPlanosDeVoo() {
+        return repository.findAll();
     }
 
     public Boolean LiberarPlanoDeVoo(PlanoDeVooDTO planoDeVoo) {
-        return null;
+        if(verificaPlanoDeVoo(planoDeVoo).equalsIgnoreCase("Ok")){
+            cadastraPlanoDeVoo(planoDeVoo);
+            return true;
+        }
+        return false;
     }
 
-    public Boolean CancelarPlanoDeVoo(PlanoDeVooDTO planoDeVoo) {
-        return null;
+    public Boolean CancelarPlanoDeVoo(long planoDeVoo) {
+        if(repository.existsById(planoDeVoo)){
+            PlanoDeVooEntity updatedPlanoDeVoo = repository.findById(planoDeVoo).get();
+            updatedPlanoDeVoo.setStatus("Cancelado");
+            repository.save(updatedPlanoDeVoo);
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -61,6 +74,21 @@ public class PlanoDeVooService implements IPlanoDeVooService {
             }
         }
         return "Ok";
+    }
+
+    @Override
+    public void cadastraPlanoDeVoo(PlanoDeVooDTO planoDeVoo) {
+        PlanoDeVooEntity entity = PlanoDeVooEntity
+            .builder()
+            .data(planoDeVoo.getData().toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
+            .altitude(planoDeVoo.getAltitude())
+            .numeroVoo(planoDeVoo.getNumeroVoo())
+            .velocidade(planoDeVoo.getVelocidade())
+            .status(planoDeVoo.getStatus())
+            .rotaEntity(planoDeVoo.getRota())
+            .build();
+            
+        repository.save(entity);
     }
 
     
