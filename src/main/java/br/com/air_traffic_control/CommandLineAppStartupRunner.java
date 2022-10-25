@@ -33,6 +33,7 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
     public void run(String... args) {
         System.out.println("Startou!");
 
+        //REFGEOs ---------------------------------------------------------------------------------------------
         RefGeoDTO GRU = RefGeoDTO
                 .builder()
                 .nome("GRU")
@@ -70,15 +71,20 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
         FLN.setId(CreateRefGeo(FLN));
         POA.setId(CreateRefGeo(POA));
 
-        var GRU_CGH = CreateAerovia(GRU,CGH);
+        //AEROVIAS --------------------------------------------------------------------------------------------
+        var GRU_CGH = CreateAerovia(GRU,CGH); //1
+        var GRU_POA = CreateAerovia(GRU,POA); //2
+        var POA_FLN = CreateAerovia(POA,FLN); //3
+        var GIG_GRU = CreateAerovia(GIG,GRU); //4
+        var POA_GIG = CreateAerovia(POA,GIG); //5
+
         OcuparSlots(GRU_CGH);
-
-        CreateAerovia(GRU,POA);
-        CreateAerovia(POA,FLN);
-        CreateAerovia(GIG,GRU);
-        var POA_GIG = CreateAerovia(POA,GIG);
         OcuparSlots(POA_GIG);
+        OcuparSlots(GRU_POA);
+        OcuparSlots(POA_FLN);
+        OcuparSlots(GIG_GRU);
 
+        //AERONAVES ---------------------------------------------------------------------------------------------
         var A320 = AeronaveDTO
                 .builder()
                 .autonomia(6100)
@@ -95,34 +101,71 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
                 .build();
         CreateAeronave(B737);
 
-        var POA_GRU = RotaEntity
+        //ROTAS ---------------------------------------------------------------------------------------------
+        var Rota_POAGRU = RotaEntity
                 .builder()
                 .data(new Date())
                 .origem("POA")
                 .destino("GRU")
                 .build();
+        var A5 = aeroviaService.ObterAerovia(5);
+        var A4 = aeroviaService.ObterAerovia(4);
+        Rota_POAGRU.setConjuntoAerovias(new ArrayList<>());
+        Rota_POAGRU.getConjuntoAerovias().add(A5.get());
+        Rota_POAGRU.getConjuntoAerovias().add(A4.get());
+        CreateRota(Rota_POAGRU);
 
-        var A1 = aeroviaService.ObterAerovia(5);
-        var A2 = aeroviaService.ObterAerovia(4);
 
-        POA_GRU.setConjuntoAerovias(new ArrayList<>());
-        POA_GRU.getConjuntoAerovias().add(A1.get());
-        POA_GRU.getConjuntoAerovias().add(A2.get());
-        CreateRota(POA_GRU);
-
-        var POA_FLN = RotaEntity
+        var Rota_POAFLN = RotaEntity
                 .builder()
                 .data(new Date())
                 .origem("POA")
                 .destino("FLN")
                 .build();
-
         var A3 = aeroviaService.ObterAerovia(3);
+        Rota_POAFLN.setConjuntoAerovias(new ArrayList<>());
+        Rota_POAFLN.getConjuntoAerovias().add(A3.get());
+        CreateRota(Rota_POAFLN);
 
-        POA_FLN.setConjuntoAerovias(new ArrayList<>());
-        POA_FLN.getConjuntoAerovias().add(A3.get());
-        CreateRota(POA_FLN);
 
+        var Rota_GRUFLN = RotaEntity
+                .builder()
+                .data(new Date())
+                .origem("GRU")
+                .destino("FLN")
+                .build();
+        var A2 = aeroviaService.ObterAerovia(2);
+        Rota_GRUFLN.setConjuntoAerovias(new ArrayList<>());
+        Rota_GRUFLN.getConjuntoAerovias().add(A2.get());
+        Rota_GRUFLN.getConjuntoAerovias().add(A3.get());
+        CreateRota(Rota_GRUFLN);
+
+
+        var Rota_GIGPOA = RotaEntity
+                .builder()
+                .data(new Date())
+                .origem("GIG")
+                .destino("POA")
+                .build();
+        Rota_GIGPOA.setConjuntoAerovias(new ArrayList<>());
+        Rota_GIGPOA.getConjuntoAerovias().add(A4.get());
+        Rota_GIGPOA.getConjuntoAerovias().add(A2.get());
+        CreateRota(Rota_GIGPOA);
+
+
+        var Rota_GIGCGH = RotaEntity
+                .builder()
+                .data(new Date())
+                .origem("GIG")
+                .destino("CGH")
+                .build();
+        var A1 = aeroviaService.ObterAerovia(1);
+        Rota_GIGCGH.setConjuntoAerovias(new ArrayList<>());
+        Rota_GIGCGH.getConjuntoAerovias().add(A4.get());
+        Rota_GIGCGH.getConjuntoAerovias().add(A1.get());
+        CreateRota(Rota_GIGCGH);
+
+        //AEROPORTOS ---------------------------------------------------------------------------------------------
         var RGRU = refGeoService.ObterRefGeo(1);
         var RCGH = refGeoService.ObterRefGeo(2);
         var RGIG = refGeoService.ObterRefGeo(3);
@@ -165,6 +208,7 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
         CreateAeroporto(AGIG);
         CreateAeroporto(AFLN);
         CreateAeroporto(APOA);
+
     }
 
     private AeroviaEntity CreateAerovia(RefGeoDTO c1, RefGeoDTO c2){
@@ -188,8 +232,11 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
     }
 
     private void OcuparSlots(AeroviaEntity aerovia){
-        for (int i = 50; i< 150; i++){
+        for (int i = 0; i< 30; i++){
             aerovia.getSlots().get(i).setDisponivel(false);
+        }
+        for (int i = 100; i< 190; i++){
+                aerovia.getSlots().get(i).setDisponivel(false);
         }
 
         aeroviaService.AtualizarAerovia(aerovia);

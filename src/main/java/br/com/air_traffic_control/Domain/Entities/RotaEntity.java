@@ -26,7 +26,7 @@ public class RotaEntity {
 
     private String destino;
 
-    @OneToMany( targetEntity=AeroviaEntity.class )
+    @ManyToMany( targetEntity=AeroviaEntity.class )
     private List<AeroviaEntity> conjuntoAerovias;
 
     @Column(name = "data")

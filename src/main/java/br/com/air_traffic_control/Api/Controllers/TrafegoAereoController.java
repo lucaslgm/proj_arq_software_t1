@@ -51,6 +51,10 @@ public class TrafegoAereoController {
         return planoDeVooService.ListarPlanosDeVoo();
     }
 
+    @GetMapping("/rotas/listarTodasRotas")
+    List<RotaEntity> ListarRotas(){
+        return rotaService.ListarRotas();
+    }
 
     @PostMapping("/liberarPlanoDeVoo")
     Boolean LiberarPlanoDeVoo(@RequestParam("data") String data, @RequestParam("horario") int horario,
