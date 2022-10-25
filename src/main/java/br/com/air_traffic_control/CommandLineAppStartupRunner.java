@@ -20,13 +20,15 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
     private final IRotaService rotaService;
     private final IAeroportoService aeroportoService;
     private final IRefGeoService refGeoService;
+    private final IPlanoDeVooService planoDeVooService;
 
-    public CommandLineAppStartupRunner(IAeroviaService aeroviaService, IAeronaveService aeronaveService, IRotaService rotaService, IAeroportoService aeroportoService, IRefGeoService refGeoService) {
+    public CommandLineAppStartupRunner(IAeroviaService aeroviaService, IAeronaveService aeronaveService, IRotaService rotaService, IAeroportoService aeroportoService, IRefGeoService refGeoService, IPlanoDeVooService planoDeVooService) {
         this.aeroviaService = aeroviaService;
         this.aeronaveService = aeronaveService;
         this.rotaService = rotaService;
         this.aeroportoService = aeroportoService;
         this.refGeoService = refGeoService;
+        this.planoDeVooService = planoDeVooService;
     }
 
     @Override
